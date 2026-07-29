@@ -8,7 +8,7 @@ buttons.forEach(button => {
   button.addEventListener('click', () => {
     cart.push({
       name: button.dataset.name,
-      price: button.dataset.price
+      price: Number(button.dataset.price)
     });
 
     updateCart();
@@ -19,9 +19,23 @@ function updateCart() {
   count.textContent = cart.length;
   items.innerHTML = '';
 
-  cart.forEach(product => {
+  let total = 0;
+
+  cart.forEach((product, index) => {
+    total += product.price;
+
     const li = document.createElement('li');
-    li.textContent = `${product.name} - ${product.price}$`;
+    li.innerHTML = `${product.name} - ${product.price}$ <button onclick="removeProduct(${index})">حذف</button>`;
     items.appendChild(li);
   });
+
+  const totalElement = document.getElementById('cart-total');
+  if (totalElement) {
+    totalElement.textContent = `الإجمالي: ${total}$`;
+  }
+}
+
+function removeProduct(index) {
+  cart.splice(index, 1);
+  updateCart();
 }
