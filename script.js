@@ -40,6 +40,23 @@ function updateCart() {
   if (totalElement) {
     totalElement.textContent = `الإجمالي: ${total}$`;
   }
+
+  updateWhatsApp(total);
+}
+
+function updateWhatsApp(total) {
+  const button = document.getElementById('whatsapp-order');
+  if (!button) return;
+
+  let message = 'طلب جديد من متجر الوافي:%0A%0A';
+
+  cart.forEach(product => {
+    message += `- ${product.name}: ${product.price}$%0A`;
+  });
+
+  message += `%0Aالإجمالي: ${total}$`;
+
+  button.href = `https://wa.me/967730705315?text=${message}`;
 }
 
 function removeProduct(index) {
