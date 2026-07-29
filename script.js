@@ -30,16 +30,13 @@ function updateCart() {
 
   cart.forEach((product, index) => {
     total += product.price;
-
     const li = document.createElement('li');
     li.innerHTML = `${product.name} - ${product.price}$ <button onclick="removeProduct(${index})">حذف</button>`;
     items.appendChild(li);
   });
 
   const totalElement = document.getElementById('cart-total');
-  if (totalElement) {
-    totalElement.textContent = `الإجمالي: ${total}$`;
-  }
+  if (totalElement) totalElement.textContent = `الإجمالي: ${total}$`;
 
   updateWhatsApp(total);
 }
@@ -49,13 +46,11 @@ function updateWhatsApp(total) {
   if (!button) return;
 
   let message = 'طلب جديد من متجر الوافي:%0A%0A';
-
   cart.forEach(product => {
     message += `- ${product.name}: ${product.price}$%0A`;
   });
 
   message += `%0Aالإجمالي: ${total}$`;
-
   button.href = `https://wa.me/967730705315?text=${message}`;
 }
 
@@ -63,6 +58,20 @@ function removeProduct(index) {
   cart.splice(index, 1);
   saveCart();
   updateCart();
+}
+
+const searchInput = document.getElementById('search-input');
+const products = document.querySelectorAll('#products .product');
+
+if (searchInput) {
+  searchInput.addEventListener('input', () => {
+    const value = searchInput.value.toLowerCase();
+
+    products.forEach(product => {
+      const name = product.dataset.name.toLowerCase();
+      product.style.display = name.includes(value) ? 'block' : 'none';
+    });
+  });
 }
 
 updateCart();
