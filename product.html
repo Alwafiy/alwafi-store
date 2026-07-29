@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>تفاصيل المنتج - متجر الوافي</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header><h1>🛒 تفاصيل المنتج</h1></header>
+<section class="product" id="product-details">
+<img id="product-image" width="300" alt="المنتج">
+<h2 id="product-name"></h2>
+<p id="product-desc"></p>
+<h3 id="product-price"></h3>
+<button id="add-product" class="btn">أضف للسلة</button>
+<br><br>
+<a href="index.html">العودة للمتجر</a>
+</section>
+<script>
+const params = new URLSearchParams(location.search);
+const name = params.get('name');
+const price = params.get('price');
+const image = params.get('image');
+const desc = params.get('desc');
+
+document.getElementById('product-name').textContent = name;
+document.getElementById('product-price').textContent = price + '$';
+document.getElementById('product-desc').textContent = desc;
+document.getElementById('product-image').src = image;
+
+document.getElementById('add-product').onclick = () => {
+ let cart = JSON.parse(localStorage.getItem('alwafiCart')) || [];
+ cart.push({name, price:Number(price)});
+ localStorage.setItem('alwafiCart', JSON.stringify(cart));
+ alert('تمت إضافة المنتج إلى السلة');
+};
+</script>
+</body>
+</html>
