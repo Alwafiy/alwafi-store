@@ -6,11 +6,7 @@ const items = document.getElementById('cart-items');
 
 buttons.forEach(button => {
   button.addEventListener('click', () => {
-    cart.push({
-      name: button.dataset.name,
-      price: Number(button.dataset.price)
-    });
-
+    cart.push({ name: button.dataset.name, price: Number(button.dataset.price) });
     saveCart();
     updateCart();
   });
@@ -22,10 +18,8 @@ function saveCart() {
 
 function updateCart() {
   if (!count || !items) return;
-
   count.textContent = cart.length;
   items.innerHTML = '';
-
   let total = 0;
 
   cart.forEach((product, index) => {
@@ -37,7 +31,6 @@ function updateCart() {
 
   const totalElement = document.getElementById('cart-total');
   if (totalElement) totalElement.textContent = `الإجمالي: ${total}$`;
-
   updateWhatsApp(total);
 }
 
@@ -49,7 +42,6 @@ function updateWhatsApp(total) {
   cart.forEach(product => {
     message += `- ${product.name}: ${product.price}$%0A`;
   });
-
   message += `%0Aالإجمالي: ${total}$`;
   button.href = `https://wa.me/967730705315?text=${message}`;
 }
@@ -62,16 +54,31 @@ function removeProduct(index) {
 
 const searchInput = document.getElementById('search-input');
 const products = document.querySelectorAll('#products .product');
+const categoryButtons = document.querySelectorAll('.category-btn');
+let selectedCategory = 'all';
 
-if (searchInput) {
-  searchInput.addEventListener('input', () => {
-    const value = searchInput.value.toLowerCase();
+function filterProducts() {
+  const value = searchInput ? searchInput.value.toLowerCase() : '';
 
-    products.forEach(product => {
-      const name = product.dataset.name.toLowerCase();
-      product.style.display = name.includes(value) ? 'block' : 'none';
-    });
+  products.forEach(product => {
+    const name = product.dataset.name.toLowerCase();
+    const category = product.dataset.category;
+    const matchesSearch = name.includes(value);
+    const matchesCategory = selectedCategory === 'all' || category === selectedCategory;
+
+    product.style.display = matchesSearch && matchesCategory ? 'block' : 'none';
   });
 }
+
+if (searchInput) {
+  searchInput.addEventListener('input', filterProducts);
+}
+
+categoryButtons.forEach(button => {
+  button.addEventListener('click', () => {
+    selectedCategory = button.dataset.category;
+    filterProducts();
+  });
+});
 
 updateCart();
