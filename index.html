@@ -22,20 +22,27 @@
   <input id="search-input" type="text" placeholder="🔍 ابحث عن منتج...">
 </section>
 
+<section class="product categories">
+  <button class="btn category-btn" data-category="all">الكل</button>
+  <button class="btn category-btn" data-category="هواتف">هواتف</button>
+  <button class="btn category-btn" data-category="إكسسوارات">إكسسوارات</button>
+  <button class="btn category-btn" data-category="ساعات">ساعات</button>
+</section>
+
 <section id="products" class="products">
-  <div class="product" data-name="هاتف ذكي">
+  <div class="product" data-name="هاتف ذكي" data-category="هواتف">
     <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=500&q=80" alt="هاتف ذكي">
     <h3>هاتف ذكي</h3>
     <p class="price">120$</p>
     <button class="btn add-cart" data-name="هاتف ذكي" data-price="120">أضف للسلة</button>
   </div>
-  <div class="product" data-name="سماعة بلوتوث">
+  <div class="product" data-name="سماعة بلوتوث" data-category="إكسسوارات">
     <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=500&q=80" alt="سماعة بلوتوث">
     <h3>سماعة بلوتوث</h3>
     <p class="price">25$</p>
     <button class="btn add-cart" data-name="سماعة بلوتوث" data-price="25">أضف للسلة</button>
   </div>
-  <div class="product" data-name="ساعة ذكية">
+  <div class="product" data-name="ساعة ذكية" data-category="ساعات">
     <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=500&q=80" alt="ساعة ذكية">
     <h3>ساعة ذكية</h3>
     <p class="price">40$</p>
