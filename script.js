@@ -1,4 +1,4 @@
-let cart = [];
+let cart = JSON.parse(localStorage.getItem('alwafiCart')) || [];
 
 const buttons = document.querySelectorAll('.add-cart');
 const count = document.getElementById('cart-count');
@@ -11,11 +11,18 @@ buttons.forEach(button => {
       price: Number(button.dataset.price)
     });
 
+    saveCart();
     updateCart();
   });
 });
 
+function saveCart() {
+  localStorage.setItem('alwafiCart', JSON.stringify(cart));
+}
+
 function updateCart() {
+  if (!count || !items) return;
+
   count.textContent = cart.length;
   items.innerHTML = '';
 
@@ -37,5 +44,8 @@ function updateCart() {
 
 function removeProduct(index) {
   cart.splice(index, 1);
+  saveCart();
   updateCart();
 }
+
+updateCart();
