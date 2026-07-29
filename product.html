@@ -13,6 +13,27 @@
 <h2 id="product-name"></h2>
 <p id="product-desc"></p>
 <h3 id="product-price"></h3>
+
+<div class="rating">
+<h3>تقييم المنتج</h3>
+<div id="stars">
+<button data-rate="1">★</button>
+<button data-rate="2">★</button>
+<button data-rate="3">★</button>
+<button data-rate="4">★</button>
+<button data-rate="5">★</button>
+</div>
+<p id="rating-result">لا يوجد تقييم بعد</p>
+</div>
+
+<div class="reviews">
+<h3>أضف تعليقك</h3>
+<input id="review-name" placeholder="اسمك">
+<textarea id="review-text" placeholder="اكتب تقييمك"></textarea>
+<button id="save-review" class="btn">إضافة التقييم</button>
+<ul id="review-list"></ul>
+</div>
+
 <button id="add-product" class="btn">أضف للسلة</button>
 <br><br>
 <a href="index.html">العودة للمتجر</a>
@@ -24,6 +45,7 @@ const price = params.get('price');
 const image = params.get('image');
 const desc = params.get('desc');
 
+productName = name;
 document.getElementById('product-name').textContent = name;
 document.getElementById('product-price').textContent = price + '$';
 document.getElementById('product-desc').textContent = desc;
@@ -35,6 +57,29 @@ document.getElementById('add-product').onclick = () => {
  localStorage.setItem('alwafiCart', JSON.stringify(cart));
  alert('تمت إضافة المنتج إلى السلة');
 };
+
+let rating = 0;
+document.querySelectorAll('#stars button').forEach(star => {
+ star.onclick = () => {
+  rating = star.dataset.rate;
+  document.getElementById('rating-result').textContent = `تقييمك: ${rating} نجوم`;
+ };
+});
+
+const reviewKey = 'reviews_' + name;
+function loadReviews(){
+ const reviews = JSON.parse(localStorage.getItem(reviewKey)) || [];
+ document.getElementById('review-list').innerHTML = reviews.map(r => `<li>⭐ ${r.rate}/5 - ${r.name}: ${r.text}</li>`).join('');
+}
+
+document.getElementById('save-review').onclick = () => {
+ const reviews = JSON.parse(localStorage.getItem(reviewKey)) || [];
+ reviews.push({name: document.getElementById('review-name').value, text: document.getElementById('review-text').value, rate: rating || 0});
+ localStorage.setItem(reviewKey, JSON.stringify(reviews));
+ loadReviews();
+};
+
+loadReviews();
 </script>
 </body>
 </html>
