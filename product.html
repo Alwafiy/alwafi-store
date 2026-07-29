@@ -17,18 +17,14 @@
 <div class="rating">
 <h3>تقييم المنتج</h3>
 <div id="stars">
-<button data-rate="1">★</button>
-<button data-rate="2">★</button>
-<button data-rate="3">★</button>
-<button data-rate="4">★</button>
-<button data-rate="5">★</button>
+<button data-rate="1">★</button><button data-rate="2">★</button><button data-rate="3">★</button><button data-rate="4">★</button><button data-rate="5">★</button>
 </div>
 <p id="rating-result">لا يوجد تقييم بعد</p>
 </div>
 
 <div class="reviews">
 <h3>أضف تعليقك</h3>
-<input id="review-name" placeholder="اسمك">
+<p id="current-user"></p>
 <textarea id="review-text" placeholder="اكتب تقييمك"></textarea>
 <button id="save-review" class="btn">إضافة التقييم</button>
 <ul id="review-list"></ul>
@@ -45,7 +41,9 @@ const price = params.get('price');
 const image = params.get('image');
 const desc = params.get('desc');
 
-productName = name;
+const user = localStorage.getItem('alwafiUser');
+document.getElementById('current-user').textContent = user ? `المستخدم: ${user}` : 'يرجى تسجيل الدخول لإضافة تقييم';
+
 document.getElementById('product-name').textContent = name;
 document.getElementById('product-price').textContent = price + '$';
 document.getElementById('product-desc').textContent = desc;
@@ -69,12 +67,16 @@ document.querySelectorAll('#stars button').forEach(star => {
 const reviewKey = 'reviews_' + name;
 function loadReviews(){
  const reviews = JSON.parse(localStorage.getItem(reviewKey)) || [];
- document.getElementById('review-list').innerHTML = reviews.map(r => `<li>⭐ ${r.rate}/5 - ${r.name}: ${r.text}</li>`).join('');
+ document.getElementById('review-list').innerHTML = reviews.map(r => `<li>⭐ ${r.rate}/5 - ${r.user}: ${r.text}</li>`).join('');
 }
 
 document.getElementById('save-review').onclick = () => {
+ if (!user) {
+  alert('يجب تسجيل الدخول أولاً');
+  return;
+ }
  const reviews = JSON.parse(localStorage.getItem(reviewKey)) || [];
- reviews.push({name: document.getElementById('review-name').value, text: document.getElementById('review-text').value, rate: rating || 0});
+ reviews.push({user, text: document.getElementById('review-text').value, rate: rating || 0});
  localStorage.setItem(reviewKey, JSON.stringify(reviews));
  loadReviews();
 };
